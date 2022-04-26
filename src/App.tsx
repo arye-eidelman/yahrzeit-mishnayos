@@ -31,16 +31,26 @@ function App() {
         const normilizedLetter = toNonEndingCase(letter);
         const chapters = chaptersByLetter[normilizedLetter as hebrewLetter];
         if (!chapters) { return null; }
+        let mesechtaTitle = ""
+        let sameMesechta = false
         return (
           <div className="m-4" key={letter} dir="rtl">
-            <h2 className="text-2xl">{letter}</h2>
+            <h2 className="text-5xl">{letter}</h2>
             <ul className="list-disc list-inside">
               {
-            chapters.map(chapter => (
-              <button className="text-lime-700 px-2 py-1">
-                {chapter.title}
-              </button>
-            ))}
+                chapters.map(chapter => {
+                  sameMesechta = mesechtaTitle === chapter.mesechta
+                  mesechtaTitle = chapter.mesechta
+                  return (
+                    <a
+                      href={`https://www.sefaria.org/${chapter.ref}`}
+                      className={`text-lime-700 py-1 ${sameMesechta ? 'pr-0' : 'pr-2'}`}
+                      target="_blank" rel="noreferrer"
+                    >
+                      {sameMesechta ? ", " + chapter.chapter : chapter.title}
+                    </a>
+                  )
+                })}
             </ul>
           </div>
 
